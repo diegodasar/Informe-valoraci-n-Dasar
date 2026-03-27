@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
   <style>
     :root {
       --red: #9d0b0b;
@@ -528,6 +528,18 @@
       section { padding: 3rem 1.2rem; }
       .conclusion-box { padding: 1.8rem; }
     }
+
+    /* ─── PRINT / PDF ─── */
+    @media print {
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      body { background: #f5f0e6 !important; }
+      nav, #pdf-btn, .scroll-down { display: none !important; }
+      .hero { min-height: auto; padding: 3rem 2rem 2rem; page-break-after: avoid; }
+      section { break-inside: avoid; }
+      .calc-block, .data-card, .risk-card, .rec-list li { break-inside: avoid; }
+      .compare-table { break-inside: avoid; }
+      a { color: inherit; text-decoration: none; }
+    }
   </style>
 </head>
 <body>
@@ -1005,28 +1017,7 @@
 
 <script>
 function descargarPDF() {
-  const btn = document.getElementById('pdf-btn');
-  btn.textContent = 'Generando PDF…';
-  btn.disabled = true;
-
-  const opt = {
-    margin: [10, 10, 10, 10],
-    filename: 'Informe-Fiscal-DASAR.pdf',
-    image: { type: 'jpeg', quality: 0.97 },
-    html2canvas: {
-      scale: 2,
-      useCORS: true,
-      logging: false,
-      letterRendering: true
-    },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-  };
-
-  html2pdf().set(opt).from(document.body).save().then(() => {
-    btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Descargar PDF';
-    btn.disabled = false;
-  });
+  window.print();
 }
 </script>
 
