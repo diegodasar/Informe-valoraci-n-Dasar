@@ -539,21 +539,29 @@
       html, body { margin: 0 !important; padding: 0 !important; background: #f5f0e6 !important; }
       body { padding: 0 12mm !important; box-sizing: border-box; }
       nav, #pdf-btn, .scroll-down { display: none !important; }
-      /* Hero compacto en portada PDF */
+
+      /* Hero: fondo crema sólido, sin gradiente, sin patrón decorativo */
       .hero {
         min-height: auto !important;
         padding: 14mm 2rem 10mm !important;
         page-break-after: always;
+        background: #f5f0e6 !important;
       }
+      .hero::before { display: none !important; }
       .hero-logo { width: 180px !important; margin-bottom: 1.2rem !important; }
-      .hero h1 { font-size: 2rem !important; }
-      .hero-subtitle { font-size: 0.95rem !important; margin-bottom: 1.5rem !important; }
+      .hero h1 { font-size: 2rem !important; color: #1e1a14 !important; }
+      .hero-subtitle { font-size: 0.95rem !important; margin-bottom: 1.5rem !important; color: #4a4540 !important; }
       .hero-stats { margin-top: 1.5rem !important; }
-      .hero-badge { margin-bottom: 1rem !important; }
-      section { break-inside: avoid; padding: 2rem 0; }
+      .hero-badge { margin-bottom: 1rem !important; color: #9d0b0b !important; }
+      .stat-card { background: #fff !important; border: 1px solid rgba(0,0,0,0.12) !important; }
+      .stat-card .value { color: #1e1a14 !important; }
+
+      /* Resto del contenido */
+      section { break-inside: avoid; padding: 2rem 0; background: #f5f0e6 !important; }
       .calc-block, .data-card, .risk-card, .rec-list li { break-inside: avoid; }
       .compare-table { break-inside: avoid; font-size: 0.78rem; }
       .divider { margin: 0; }
+      footer { background: #ede7d9 !important; }
       a { color: inherit; text-decoration: none; }
     }
   </style>
