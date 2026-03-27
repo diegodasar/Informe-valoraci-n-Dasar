@@ -8,21 +8,22 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
     :root {
       --red: #9d0b0b;
       --red-light: #c41313;
-      --red-muted: rgba(157,11,11,0.12);
-      --dark: #111213;
-      --dark2: #1a1c1e;
-      --dark3: #232629;
-      --border: rgba(255,255,255,0.08);
-      --text: #e8eaed;
-      --text-muted: #9aa0a6;
-      --text-dim: #6b7280;
-      --white: #ffffff;
-      --surface: rgba(255,255,255,0.04);
-      --surface-hover: rgba(255,255,255,0.07);
+      --red-muted: rgba(157,11,11,0.10);
+      --dark: #f5f0e6;
+      --dark2: #ede7d9;
+      --dark3: #e4dccb;
+      --border: rgba(0,0,0,0.10);
+      --text: #1e1a14;
+      --text-muted: #4a4540;
+      --text-dim: #7a7060;
+      --white: #111111;
+      --surface: rgba(255,255,255,0.60);
+      --surface-hover: rgba(255,255,255,0.80);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -37,12 +38,38 @@
       font-size: 16px;
     }
 
+    /* ─── PDF BUTTON ─── */
+    #pdf-btn {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--red);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      padding: 0.75rem 1.5rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(157,11,11,0.35);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    #pdf-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(157,11,11,0.45); }
+    #pdf-btn:active { transform: translateY(0); }
+    #pdf-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    @media print { #pdf-btn { display: none !important; } }
+
     /* ─── NAV ─── */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 1000;
-      background: rgba(17,18,19,0.92);
+      background: rgba(245,240,230,0.92);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
       padding: 0 2rem;
@@ -83,8 +110,8 @@
       padding: 8rem 2rem 5rem;
       position: relative;
       overflow: hidden;
-      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(157,11,11,0.18) 0%, transparent 70%),
-                  radial-gradient(ellipse 60% 40% at 80% 80%, rgba(157,11,11,0.08) 0%, transparent 60%),
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(157,11,11,0.12) 0%, transparent 70%),
+                  radial-gradient(ellipse 60% 40% at 80% 80%, rgba(157,11,11,0.06) 0%, transparent 60%),
                   var(--dark);
     }
 
@@ -106,7 +133,7 @@
       padding: 6px 16px;
       font-size: 0.75rem;
       font-weight: 600;
-      color: #f87171;
+      color: var(--red);
       letter-spacing: 0.08em;
       text-transform: uppercase;
       margin-bottom: 2rem;
@@ -115,7 +142,7 @@
     .hero-badge::before {
       content: '';
       width: 6px; height: 6px;
-      background: #f87171;
+      background: var(--red);
       border-radius: 50%;
       animation: pulse 2s infinite;
     }
@@ -126,10 +153,10 @@
     }
 
     .hero-logo {
-      width: 180px;
+      width: 280px;
       height: auto;
       margin-bottom: 2.5rem;
-      filter: drop-shadow(0 0 30px rgba(157,11,11,0.3));
+      filter: drop-shadow(0 4px 24px rgba(157,11,11,0.18));
     }
 
     .hero h1 {
@@ -138,10 +165,7 @@
       font-weight: 700;
       line-height: 1.15;
       margin-bottom: 1rem;
-      background: linear-gradient(135deg, #ffffff 0%, #c8cbce 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--white);
     }
 
     .hero-subtitle {
@@ -257,9 +281,9 @@
       color: var(--text);
     }
 
-    .callout.warning { border-color: #f59e0b; background: rgba(245,158,11,0.08); }
-    .callout.info { border-color: #3b82f6; background: rgba(59,130,246,0.08); }
-    .callout.success { border-color: #22c55e; background: rgba(34,197,94,0.08); }
+    .callout.warning { border-color: #b45309; background: rgba(180,83,9,0.08); }
+    .callout.info { border-color: #1d4ed8; background: rgba(29,78,216,0.07); }
+    .callout.success { border-color: #15803d; background: rgba(21,128,61,0.08); }
 
     /* ─── ESCENARIOS ─── */
     .scenarios-grid {
@@ -324,14 +348,14 @@
       font-weight: 600;
       font-size: 0.9rem;
       color: var(--white);
-      background: rgba(255,255,255,0.03);
+      background: rgba(0,0,0,0.03);
     }
     .calc-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0.65rem 1.5rem;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(0,0,0,0.05);
       font-size: 0.875rem;
     }
     .calc-row:last-child { border-bottom: none; }
@@ -339,7 +363,7 @@
     .calc-row .cr-value { font-weight: 600; color: var(--white); font-variant-numeric: tabular-nums; }
     .calc-row.total { background: rgba(157,11,11,0.1); }
     .calc-row.total .cr-label { color: var(--text); font-weight: 600; }
-    .calc-row.total .cr-value { color: #fca5a5; font-size: 1rem; }
+    .calc-row.total .cr-value { color: var(--red); font-size: 1rem; }
 
     /* ─── COMPARISON TABLE ─── */
     .compare-table {
@@ -353,7 +377,7 @@
       margin-top: 2rem;
     }
     .compare-table th {
-      background: rgba(255,255,255,0.05);
+      background: rgba(0,0,0,0.04);
       color: var(--text-muted);
       font-size: 0.72rem;
       font-weight: 600;
@@ -365,18 +389,18 @@
     }
     .compare-table td {
       padding: 0.85rem 1.2rem;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(0,0,0,0.05);
       font-size: 0.875rem;
       color: var(--text-muted);
       vertical-align: middle;
     }
     .compare-table tr:last-child td { border-bottom: none; }
-    .compare-table tr:hover td { background: rgba(255,255,255,0.02); }
-    .compare-table td.best { color: #4ade80; font-weight: 700; }
-    .compare-table td.worst { color: #f87171; }
+    .compare-table tr:hover td { background: rgba(0,0,0,0.02); }
+    .compare-table td.best { color: #15803d; font-weight: 700; }
+    .compare-table td.worst { color: #9d0b0b; }
     .compare-table td.option-name { color: var(--white); font-weight: 500; }
     .compare-table tr.recommended td { background: rgba(157,11,11,0.08); }
-    .compare-table tr.recommended td.option-name { color: #fca5a5; }
+    .compare-table tr.recommended td.option-name { color: var(--red); font-weight: 600; }
 
     /* ─── RISK CARDS ─── */
     .risks-grid {
@@ -398,7 +422,7 @@
       line-height: 1;
       margin-bottom: 0.5rem;
     }
-    .risk-card h4 { font-size: 0.95rem; color: var(--white); margin-bottom: 0.5rem; }
+    .risk-card h4 { font-size: 0.95rem; color: var(--white); font-weight: 700; margin-bottom: 0.5rem; }
     .risk-card p { font-size: 0.82rem; margin-bottom: 0; }
 
     /* ─── RECOMMENDATIONS ─── */
@@ -468,7 +492,7 @@
       font-size: 0.82rem;
       color: var(--text-dim);
     }
-    footer img { height: 32px; width: auto; margin-bottom: 1rem; opacity: 0.7; }
+    footer img { height: 40px; width: auto; margin-bottom: 1rem; opacity: 0.8; }
     footer p { margin: 0.3rem 0; }
 
     /* ─── SCROLL INDICATOR ─── */
@@ -507,6 +531,12 @@
   </style>
 </head>
 <body>
+
+<!-- ══ PDF BUTTON ══ -->
+<button id="pdf-btn" onclick="descargarPDF()">
+  <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+  Descargar PDF
+</button>
 
 <!-- ══════════════════════════ NAV ══════════════════════════ -->
 <nav>
@@ -972,6 +1002,33 @@
   <p style="margin-top:0.5rem;color:var(--text-dim)">Este documento ha sido elaborado con base en la normativa vigente y la información facilitada. No constituye asesoramiento fiscal definitivo individualizado. DASAR no asume responsabilidad por decisiones adoptadas sin consulta directa previa.</p>
   <p style="margin-top:1rem">© 2025 DASAR · Todos los derechos reservados</p>
 </footer>
+
+<script>
+function descargarPDF() {
+  const btn = document.getElementById('pdf-btn');
+  btn.textContent = 'Generando PDF…';
+  btn.disabled = true;
+
+  const opt = {
+    margin: [10, 10, 10, 10],
+    filename: 'Informe-Fiscal-DASAR.pdf',
+    image: { type: 'jpeg', quality: 0.97 },
+    html2canvas: {
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      letterRendering: true
+    },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+  };
+
+  html2pdf().set(opt).from(document.body).save().then(() => {
+    btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Descargar PDF';
+    btn.disabled = false;
+  });
+}
+</script>
 
 </body>
 </html>
